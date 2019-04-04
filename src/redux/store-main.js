@@ -4,22 +4,22 @@
 const redux = require('redux');
 const electronRedux = require('electron-redux');
 
-// const { ApplicationState } = require('./application-state.js');
 const reducers = require('./reducers');
 
 const initialState = {
   settings: {
-    path: 'initial'
+    ready: false,
+    ankiPath: undefined
   }
 };
-// const initialState = new ApplicationState();
 
 const store = redux.createStore(
   reducers,
   initialState,
   redux.applyMiddleware(
     electronRedux.triggerAlias,
-    electronRedux.forwardToRenderer, // IMPORTANT! This goes last
+    // IMPORTANT! This goes last
+    electronRedux.forwardToRenderer
   )
 );
 

@@ -20,7 +20,8 @@ const store = createStore(
   reducers,
   initialState,
   applyMiddleware(
-    forwardToMain // IMPORTANT! This goes first
+    // IMPORTANT! This goes first
+    forwardToMain
   ),
 );
 

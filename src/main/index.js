@@ -3,17 +3,10 @@ const path = require('path');
 const url = require('url');
 
 const store = require('../redux/store-main.js');
-
-const { loadSettings } = require('../redux/actions.js');
+const { readSettings } = require('../redux/actions.js');
+const config = require('./utils/config.js');
 
 const APP_DIR = path.resolve(process.cwd());
-
-// This enables electron hot-reload
-// TODO: move this from here to dev webpack config
-require('electron-reload')(`${APP_DIR}/dist`, {
-  electron: `${APP_DIR}/node_modules/.bin/electron`,
-  hardResetMethod: 'exit'
-});
 
 let win;
 
@@ -21,7 +14,7 @@ let win;
 function createWindow() {
   // This makes work React Dev Tools in the electron inspector
   // TODO: move this from here
-  BrowserWindow.addDevToolsExtension('/home/dima/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0/');
+  // BrowserWindow.addDevToolsExtension('/home/dima/.config/google-chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0/');
 
   win = new BrowserWindow({
     width: 1100,
@@ -42,21 +35,21 @@ function createWindow() {
   });
 }
 
-app.on('ready', () => {
-  let time = 0;
+function displayError(message) {
+  const contents = win.webContents;
+  contents.send('error', message);
+}
 
-  const fn = () => {
-    setTimeout(() => {
-      time++;
-      store.dispatch(loadSettings(`${time}`));
-
-      fn();
-    }, 1000);
-  };
-
-  fn();
-
+app.on('ready', async () => {
   createWindow();
+
+  setTimeout(async () => {
+    try {
+      await config.load();
+    } catch (error) {
+      displayError(error.message);
+    }
+  }, 3000);
 });
 
 app.on('window-all-closed', () => {

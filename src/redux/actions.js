@@ -1,25 +1,25 @@
 const { createAliasedAction } = require('electron-redux');
 
 const ACTIONS = {
-  SETTINGS_UPDATE: 'settings.update',
-  SETTINGS_LOAD: 'settings.load'
+  SETTINGS_WRITE: 'settings.write',
+  SETTINGS_READ: 'settings.read'
 };
 
-const updateSettings = path => ({
-  type: ACTIONS.SETTINGS_UPDATE,
+const writeSettings = path => ({
+  type: ACTIONS.SETTINGS_WRITE,
   payload: { path }
 });
 
-const loadSettings = createAliasedAction(
-  ACTIONS.SETTINGS_LOAD,
+const readSettings = createAliasedAction(
+  ACTIONS.SETTINGS_READ,
   path => ({
-    type: ACTIONS.SETTINGS_LOAD,
+    type: ACTIONS.SETTINGS_READ,
     payload: { path }
   })
 );
 
 module.exports = {
   ACTIONS,
-  updateSettings,
-  loadSettings
+  writeSettings,
+  readSettings
 };
