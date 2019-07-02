@@ -1,0 +1,9 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "class-methods-use-this": "off",
+    "comma-dangle": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-plusplus": "off"
+  }
+}
